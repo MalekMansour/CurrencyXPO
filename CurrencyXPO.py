@@ -13,15 +13,15 @@ NEON_GREEN = "#00FF66"      # Profit / Value Up
 NEON_RED = "#FF3333"        # Expense / Value Down
 PANEL_DARK = "#121212"      # High-Contrast Component Gray
 
-# Currency to Flag Emoji Mapping Matrix
-FLAGS = {
-    "USD": "🇺🇸", "EUR": "🇪🇺", "GBP": "🇬🇧", "JPY": "🇯🇵", "CAD": "🇨🇦", "AUD": "🇦🇺", "CHF": "🇨🇭", "CNY": "🇨🇳", "HKD": "🇭🇰", "NZD": "🇳🇿",
-    "ZAR": "🇿🇦", "EGP": "🇪🇬", "NGN": "🇳🇬", "KES": "🇰🇪", "GHS": "🇬🇭", "MAD": "🇲🇦", "DZD": "🇩🇿", "TND": "🇹🇳", "UGX": "🇺🇬", "TZS": "🇹🇿",
-    "ETB": "🇪🇹", "ZMW": "🇿🇲", "MUR": "🇲🇺", "BWP": "🇧🇼", "XOF": "🇨🇮", "XAF": "🇨🇲", "RWF": "🇷🇼", "AOA": "🇦🇴", "MZN": "🇲🇿", "SCR": "🇸🇨",
-    "SEK": "🇸🇪", "NOK": "🇳🇴", "DKK": "🇩🇰", "PLN": "🇵🇱", "CZK": "🇨🇿", "HUF": "🇭🇺", "RON": "🇷🇴", "BGN": "🇧🇬", "TRY": "🇹🇷", "AED": "🇦🇪",
-    "SAR": "🇸🇦", "INR": "🇮🇳", "KRW": "🇰🇷", "SGD": "🇸🇬", "MYR": "🇲🇾", "THB": "🇹🇭", "IDR": "🇮🇩", "PHP": "🇵🇭", "VND": "🇻🇳", "ILS": "🇮🇱",
-    "KWD": "🇰🇼", "QAR": "🇶🇦", "OMR": "🇴🇲", "BHD": "🇧🇭", "PKR": "🇵🇰", "BDT": "🇧🇩", "LKR": "🇱🇰", "TWD": "🇹🇼", "MXN": "🇲🇽", "BRL": "🇧🇷",
-    "ARS": "🇦🇷", "CLP": "🇨🇱", "COP": "🇨🇴", "PEN": "🇵🇪", "UYU": "🇺🇾", "CRC": "🇨🇷", "DOP": "🇩🇴", "ISK": "🇮🇸"
+# Regional Country Identifiers (Clean Text-Based Matrix for Windows Compatibility)
+REGIONS = {
+    "USD": "US", "EUR": "EU", "GBP": "UK", "JPY": "JP", "CAD": "CA", "AUD": "AU", "CHF": "CH", "CNY": "CN", "HKD": "HK", "NZD": "NZ",
+    "ZAR": "ZA", "EGP": "EG", "NGN": "NG", "KES": "KE", "GHS": "GH", "MAD": "MA", "DZD": "DZ", "TND": "TN", "UGX": "UG", "TZS": "TZ",
+    "ETB": "ET", "ZMW": "ZM", "MUR": "MU", "BWP": "BW", "XOF": "CI", "XAF": "CM", "RWF": "RW", "AOA": "AO", "MZN": "MZ", "SCR": "SC",
+    "SEK": "SE", "NOK": "NO", "DKK": "DK", "PLN": "PL", "CZK": "CZ", "HUF": "HU", "RON": "RO", "BGN": "BG", "TRY": "TR", "AED": "AE",
+    "SAR": "SA", "INR": "IN", "KRW": "KR", "SGD": "SG", "MYR": "MY", "THB": "TH", "IDR": "ID", "PHP": "PH", "VND": "VN", "ILS": "IL",
+    "KWD": "KW", "QAR": "QA", "OMR": "OM", "BHD": "BH", "PKR": "PK", "BDT": "BD", "LKR": "LK", "TWD": "TW", "MXN": "MX", "BRL": "BR",
+    "ARS": "AR", "CLP": "CL", "COP": "CO", "PEN": "PE", "UYU": "UY", "CRC": "CR", "DOP": "DO", "ISK": "IS"
 }
 
 class CurrencyXPO(ctk.CTk):
@@ -33,7 +33,7 @@ class CurrencyXPO(ctk.CTk):
         self.configure(fg_color=BG_COLOR)
         
         # Base Master Currencies Profile List
-        self.currencies = sorted(list(FLAGS.keys()))
+        self.currencies = sorted(list(REGIONS.keys()))
         self.rates = {c: round(random.uniform(0.5, 150.0), 2) for c in self.currencies}
         self.rates["USD"] = 1.00
         
@@ -85,13 +85,13 @@ class CurrencyXPO(ctk.CTk):
                 fetched_rates = response.json().get("rates", {})
                 for currency, rate in fetched_rates.items():
                     self.rates[currency] = rate
-                    if currency not in self.currencies and currency not in FLAGS:
-                        FLAGS[currency] = "🏳️"  # Default fallback flag for unknown discovered pairs
+                    if currency not in self.currencies and currency not in REGIONS:
+                        REGIONS[currency] = currency[:2]  # Fallback code
                         self.currencies.append(currency)
                 
                 self.currencies.sort()
                 # Dynamic update of display lists
-                self.from_curr.configure(values=[f"{FLAGS.get(c, '🏳️')} {c}" for c in self.currencies])
+                self.from_curr.configure(values=[f"[{REGIONS.get(c, '??')}] {c}" for c in self.currencies])
                 self.stats_label.configure(text="[VOLATILITY: REALTIME]  [ACTIVE CORES: 8]  [SYNC: SECURE]", text_color=NEON_GREEN)
         except Exception:
             self.stats_label.configure(text="[VOLATILITY: SIMULATED]  [ACTIVE CORES: 4]  [SYNC: LOCAL]", text_color=NEON_RED)
@@ -110,11 +110,11 @@ class CurrencyXPO(ctk.CTk):
         self.amount_entry = ctk.CTkEntry(input_row, placeholder_text="Enter Numerical Quant...", fg_color=BG_COLOR, text_color=TEXT_WHITE, font=("Courier New", 12), height=28)
         self.amount_entry.pack(side="left", fill="x", expand=True, padx=(0, 5))
         
-        # Display formatted currencies with Flag Icons inside the Selection list
-        display_options = [f"{FLAGS.get(c, '🏳️')} {c}" for c in self.currencies]
+        # Display formatted regions with Brackets inside the Selection list
+        display_options = [f"[{REGIONS.get(c, '??')}] {c}" for c in self.currencies]
         self.from_curr = ctk.CTkOptionMenu(input_row, values=display_options, fg_color=BG_COLOR, button_color="#222222", font=("Courier New", 12), width=110, height=28)
         self.from_curr.pack(side="left", padx=5)
-        self.from_curr.set("🇺🇸 USD")
+        self.from_curr.set("[US] USD")
         
         calc_btn = ctk.CTkButton(input_row, text="COMPUTE MATRIX", fg_color=NEON_GREEN, text_color=BG_COLOR, font=("Courier New", 12, "bold"), width=120, height=28, command=self.perform_calculation)
         calc_btn.pack(side="left", padx=(5, 0))
@@ -138,10 +138,10 @@ class CurrencyXPO(ctk.CTk):
             row_str = ""
             for target in sorted(self.rates.keys()):
                 converted = usd_amt * self.rates[target]
-                flag = FLAGS.get(target, "🏳️")
+                reg = REGIONS.get(target, "??")
                 
                 # Format with neat column gaps
-                item_entry = f"{flag} {target}: {converted:<12,.2f} "
+                item_entry = f"[{reg}] {target}: {converted:<12,.2f} "
                 row_str += f"{item_entry:<24}"
                 count += 1
                 if count == 3:  # Perfect spacing constraint parameters 
@@ -234,10 +234,10 @@ class CurrencyXPO(ctk.CTk):
                 self.rates[curr] = max(0.0001, round(self.rates[curr] * (1 + change), 5))
                 
                 timestamp = time.strftime("%H:%M:%S")
-                flag = FLAGS.get(curr, "🏳️")
+                reg = REGIONS.get(curr, "??")
                 
                 self.log_text.configure(state="normal")
-                self.log_text.insert("end", f"[{timestamp}] VOLATILITY DETECTED: {flag} {curr}/USD -> {self.rates[curr]:,.5f} (")
+                self.log_text.insert("end", f"[{timestamp}] VOLATILITY DETECTED: [{reg}] {curr}/USD -> {self.rates[curr]:,.5f} (")
                 if change >= 0:
                     self.log_text.insert("end", f"▲ HIGH {change*100:+.3f}%", "UP_TAG")
                 else:
@@ -257,36 +257,30 @@ class CurrencyXPO(ctk.CTk):
         self.canvas = tk.Canvas(self.marquee_frame, bg=PANEL_DARK, highlightthickness=0, height=30)
         self.canvas.pack(fill="both", expand=True)
         
-        # Build ultra-dense ticker text strings
         self.build_marquee_content()
 
     def build_marquee_content(self):
         self.canvas.delete("all")
-        # Pull 25 items for a high-intensity ticker feed
         sampled_currencies = random.sample(self.currencies, min(25, len(self.currencies)))
         
         current_x = 1350
         for currency in sampled_currencies:
-            flag = FLAGS.get(currency, "🏳️")
+            reg = REGIONS.get(currency, "??")
             rate_val = self.rates[currency]
-            text_string = f" {flag} {currency}: {rate_val:,.2f} || "
+            text_string = f" [{reg}] {currency}: {rate_val:,.2f} || "
             
-            # Alternate item colors randomly to emulate flashing terminal feeds
             text_color = random.choice([NEON_GREEN, TEXT_WHITE, NEON_RED])
             
             item = self.canvas.create_text(current_x, 15, text=text_string, font=("Courier New", 11, "bold"), fill=text_color, anchor="w")
-            # Shift spacing coordinate based on string pixel width bounds
             bounds = self.canvas.bbox(item)
             text_width = bounds[2] - bounds[0]
             current_x += text_width
 
     def animate_marquee(self):
-        # Move all items leftwards
         all_items = self.canvas.find_all()
         for item in all_items:
             self.canvas.move(item, -2, 0)
             
-        # Re-verify layout text structures if items scroll out of sight lines
         if all_items:
             last_item_bounds = self.canvas.bbox(all_items[-1])
             if last_item_bounds and last_item_bounds[2] < 0:
