@@ -13,15 +13,31 @@ NEON_GREEN = "#00FF66"      # Profit / Value Up
 NEON_RED = "#FF3333"        # Expense / Value Down
 PANEL_DARK = "#121212"      # High-Contrast Component Gray
 
-# 3-Letter Clean ISO Country Identifiers
+# 3-Letter Clean ISO Country Identifiers & Full Names Matrix
 ALPHA3 = {
-    "USD": "USA", "EUR": "EUR", "GBP": "GBR", "JPY": "JPN", "CAD": "CAN", "AUD": "AUS", "CHF": "CHE", "CNY": "CHN", "HKD": "HKG", "NZD": "NZL",
-    "ZAR": "ZAF", "EGP": "EGY", "NGN": "NGA", "KES": "KEN", "GHS": "GHA", "MAD": "MAR", "DZD": "DZA", "TND": "TUN", "UGX": "UGA", "TZS": "TZA",
-    "ETB": "ETH", "ZMW": "ZMB", "MUR": "MUS", "BWP": "BWA", "XOF": "WAF", "XAF": "CAF", "RWF": "RWA", "AOA": "AGO", "MZN": "MOZ", "SCR": "SYC",
-    "SEK": "SWE", "NOK": "NOR", "DKK": "DNK", "PLN": "POL", "CZK": "CZE", "HUF": "HUN", "RON": "ROU", "BGN": "BGR", "TRY": "TUR", "AED": "ARE",
-    "SAR": "SAU", "INR": "IND", "KRW": "KOR", "SGD": "SGP", "MYR": "MYS", "THB": "THA", "IDR": "IDN", "PHP": "PHL", "VND": "VNM", "ILS": "ISR",
-    "KWD": "KWT", "QAR": "QAT", "OMR": "OMN", "BHD": "BHR", "PKR": "PAK", "BDT": "BGD", "LKR": "LKA", "TWD": "TWN", "MXN": "MEX", "BRL": "BRA",
-    "ARS": "ARG", "CLP": "CHL", "COP": "COL", "PEN": "PER", "UYU": "URY", "CRC": "CRI", "DOP": "DOM", "ISK": "ISL"
+    "USD": ("USA", "United States Dollar"), "EUR": ("EUR", "Euro Zone"), "GBP": ("GBR", "Great Britain Pound"), 
+    "JPY": ("JPN", "Japan Yen"), "CAD": ("CAN", "Canada Dollar"), "AUD": ("AUS", "Australia Dollar"), 
+    "CHF": ("CHE", "Switzerland Franc"), "CNY": ("CHN", "China Yuan"), "HKD": ("HKG", "Hong Kong Dollar"), 
+    "NZD": ("NZL", "New Zealand Dollar"), "ZAR": ("ZAF", "South Africa Rand"), "EGP": ("EGY", "Egypt Pound"), 
+    "NGN": ("NGA", "Nigeria Naira"), "KES": ("KEN", "Kenya Shilling"), "GHS": ("GHA", "Ghana Cedi"), 
+    "MAD": ("MAR", "Morocco Dirham"), "DZD": ("DZA", "Algeria Dinars"), "TND": ("TUN", "Tunisia Dinar"), 
+    "UGX": ("UGA", "Uganda Shilling"), "TZS": ("TZA", "Tanzania Shilling"), "ETB": ("ETH", "Ethiopia Birr"), 
+    "ZMW": ("ZMB", "Zambia Kwacha"), "MUR": ("MUS", "Mauritius Rupee"), "BWP": ("BWA", "Botswana Pula"), 
+    "XOF": ("WAF", "West African CFA Franc"), "XAF": ("CAF", "Central African CFA Franc"), "RWF": ("RWA", "Rwanda Franc"), 
+    "AOA": ("AGO", "Angola Kwanza"), "MZN": ("MOZ", "Mozambique Metical"), "SCR": ("SYC", "Seychelles Rupee"),
+    "SEK": ("SWE", "Sweden Krona"), "NOK": ("NOR", "Norway Krone"), "DKK": ("DNK", "Denmark Krone"), 
+    "PLN": ("POL", "Poland Zloty"), "CZK": ("CZE", "Czech Koruna"), "HUF": ("HUN", "Hungary Forint"), 
+    "RON": ("ROU", "Romania Leu"), "BGN": ("BGR", "Bulgaria Lev"), "TRY": ("TUR", "Turkey Lira"), 
+    "AED": ("ARE", "United Arab Emirates Dirham"), "SAR": ("SAU", "Saudi Arabia Riyal"), "INR": ("IND", "India Rupee"), 
+    "KRW": ("KOR", "South Korea Won"), "SGD": ("SGP", "Singapore Dollar"), "MYR": ("MYS", "Malaysia Ringgit"), 
+    "THB": ("THA", "Thailand Baht"), "IDR": ("IDN", "Indonesia Rupiah"), "PHP": ("PHL", "Philippines Peso"), 
+    "VND": ("VNM", "Vietnam Dong"), "ILS": ("ISR", "Israel Shekel"), "KWD": ("KWT", "Kuwaiti Dinar"), 
+    "QAR": ("QAT", "Qatar Riyal"), "OMR": ("OMN", "Oman Rial"), "BHD": ("BHR", "Bahrain Dinar"), 
+    "PKR": ("PAK", "Pakistan Rupee"), "BDT": ("BGD", "Bangladesh Taka"), "LKR": ("LKA", "Sri Lanka Rupee"), 
+    "TWD": ("TWN", "Taiwan New Dollar"), "MXN": ("MEX", "Mexico Peso"), "BRL": ("BRA", "Brazil Real"),
+    "ARS": ("ARG", "Argentina Peso"), "CLP": ("CHL", "Chile Peso"), "COP": ("COL", "Colombia Peso"), 
+    "PEN": ("PER", "Peru Sol"), "UYU": ("URY", "Uruguay Peso"), "CRC": ("CRI", "Costa Rica Colon"), 
+    "DOP": ("DOM", "Dominican Republic Peso"), "ISK": ("ISL", "Iceland Krona")
 }
 
 class CurrencyXPO(ctk.CTk):
@@ -29,7 +45,7 @@ class CurrencyXPO(ctk.CTk):
         super().__init__()
         
         self.title("CurrencyXPO - Quantum Array Terminal")
-        self.geometry("1350x850")
+        self.geometry("1400x850")
         self.configure(fg_color=BG_COLOR)
         
         # Base Master Currencies Profile List
@@ -47,7 +63,6 @@ class CurrencyXPO(ctk.CTk):
         self.logo_label = ctk.CTkLabel(self.header_frame, text="⚙️ CurrencyXPO // GLOBAL MONITOR MATRIX", font=("Courier New", 20, "bold"), text_color=NEON_GREEN)
         self.logo_label.pack(side="left", padx=20, pady=12)
         
-        # Right Side Cool Dashboard Metrics Panel
         self.stats_label = ctk.CTkLabel(self.header_frame, text="[VOLATILITY: NORMAL]  [ACTIVE CORES: 8]  [SYNC: CONNECTING]", font=("Courier New", 12, "bold"), text_color="#666666")
         self.stats_label.pack(side="right", padx=20, pady=12)
         
@@ -63,8 +78,8 @@ class CurrencyXPO(ctk.CTk):
         self.left_column = ctk.CTkFrame(self.dashboard_grid, fg_color=BG_COLOR)
         self.left_column.grid(row=0, column=0, sticky="nsew", padx=(0, 10))
         self.left_column.grid_columnconfigure(0, weight=1)
-        self.left_column.grid_rowconfigure(0, weight=45) 
-        self.left_column.grid_rowconfigure(1, weight=55) 
+        self.left_column.grid_rowconfigure(0, weight=48) 
+        self.left_column.grid_rowconfigure(1, weight=52) 
 
         # Sub-Module Initializations
         self.setup_calc_module()
@@ -72,7 +87,7 @@ class CurrencyXPO(ctk.CTk):
         self.setup_log_module()
         self.setup_marquee_bar()
         
-        # Multi-Thread Engine Booting (Ensures UI doesn't stutter while fetching API)
+        # Async Network Engine Booting
         threading.Thread(target=self.fetch_live_rates, daemon=True).start()
         
         self.update_live_market_log()
@@ -86,12 +101,11 @@ class CurrencyXPO(ctk.CTk):
                 for currency, rate in fetched_rates.items():
                     self.rates[currency] = rate
                     if currency not in self.currencies and currency not in ALPHA3:
-                        ALPHA3[currency] = currency  # Fallback code if unknown discovered
+                        ALPHA3[currency] = (currency, f"{currency} Alternative Market")
                         self.currencies.append(currency)
                 
                 self.currencies.sort()
-                # Dynamic update of option menu dropdown items
-                self.from_curr.configure(values=[f"[{ALPHA3.get(c, '???')}] {c}" for c in self.currencies])
+                self.filter_options()  # Sync menu layout list variables safely
                 self.stats_label.configure(text="[VOLATILITY: REALTIME]  [ACTIVE CORES: 8]  [SYNC: SECURE]", text_color=NEON_GREEN)
         except Exception:
             self.stats_label.configure(text="[VOLATILITY: SIMULATED]  [ACTIVE CORES: 4]  [SYNC: LOCAL]", text_color=NEON_RED)
@@ -104,30 +118,66 @@ class CurrencyXPO(ctk.CTk):
         lbl = ctk.CTkLabel(calc_frame, text="[ GLOBAL CROSS-EXCHANGE GRAPH ]", font=("Courier New", 14, "bold"), text_color=TEXT_WHITE)
         lbl.pack(anchor="w", padx=15, pady=(10, 5))
         
+        # Interactive Layout Filter Matrix Row
+        filter_row = ctk.CTkFrame(calc_frame, fg_color="transparent")
+        filter_row.pack(fill="x", padx=15, pady=2)
+        
+        # Live Entry Search Field Box
+        self.search_var = tk.StringVar()
+        self.search_var.trace_add("write", lambda *args: self.filter_options())
+        
+        self.search_field = ctk.CTkEntry(filter_row, textvariable=self.search_var, placeholder_text="🔍 Search Country, Code, Name...", fg_color=BG_COLOR, text_color=TEXT_WHITE, font=("Courier New", 11), height=28)
+        self.search_field.pack(side="left", fill="x", expand=True, padx=(0, 5))
+        
+        # Option Selection Menu Dropdown
+        self.from_curr = ctk.CTkOptionMenu(filter_row, values=[], fg_color=BG_COLOR, button_color="#222222", font=("Courier New", 11), width=140, height=28)
+        self.from_curr.pack(side="left")
+        
+        # Computation Trigger Output Entry Row
         input_row = ctk.CTkFrame(calc_frame, fg_color="transparent")
         input_row.pack(fill="x", padx=15, pady=5)
         
         self.amount_entry = ctk.CTkEntry(input_row, placeholder_text="Enter Numerical Quant...", fg_color=BG_COLOR, text_color=TEXT_WHITE, font=("Courier New", 12), height=28)
         self.amount_entry.pack(side="left", fill="x", expand=True, padx=(0, 5))
         
-        # Display formatted regions with Brackets inside the Selection list
-        display_options = [f"[{ALPHA3.get(c, '???')}] {c}" for c in self.currencies]
-        self.from_curr = ctk.CTkOptionMenu(input_row, values=display_options, fg_color=BG_COLOR, button_color="#222222", font=("Courier New", 12), width=120, height=28)
-        self.from_curr.pack(side="left", padx=5)
-        self.from_curr.set("[USA] USD")
-        
-        calc_btn = ctk.CTkButton(input_row, text="COMPUTE MATRIX", fg_color=NEON_GREEN, text_color=BG_COLOR, font=("Courier New", 12, "bold"), width=120, height=28, command=self.perform_calculation)
-        calc_btn.pack(side="left", padx=(5, 0))
+        calc_btn = ctk.CTkButton(input_row, text="COMPUTE MATRIX", fg_color=NEON_GREEN, text_color=BG_COLOR, font=("Courier New", 12, "bold"), width=140, height=28, command=self.perform_calculation)
+        calc_btn.pack(side="left")
         
         self.calc_output = ctk.CTkTextbox(calc_frame, fg_color=BG_COLOR, font=("Courier New", 12), text_color=TEXT_WHITE, border_color="#1A1A1A", border_width=1)
         self.calc_output.pack(fill="both", expand=True, padx=15, pady=(5, 15))
-        self.calc_output.insert("end", "System operational. Input quantitative base variables to resolve equations.")
+        self.calc_output.insert("end", "System operational. Input search patterns and baseline values to run equations.")
+        
+        self.filter_options() # Populate initially
+
+    def filter_options(self):
+        query = self.search_var.get().lower().strip()
+        filtered_list = []
+        
+        for c in self.currencies:
+            code3, fullname = ALPHA3.get(c, ("???", "Alternative Asset"))
+            # Match against: Code name (USD), ISO Code (USA), or Full Title Name (United States)
+            if not query or query in c.lower() or query in code3.lower() or query in fullname.lower():
+                filtered_list.append(f"[{code3}] {c}")
+                
+        if not filtered_list:
+            filtered_list = ["No Match Found"]
+            
+        self.from_curr.configure(values=filtered_list)
+        
+        # Set selection choice defaults cleanly matching active query changes safely
+        if "[USA] USD" in filtered_list and not query:
+            self.from_curr.set("[USA] USD")
+        else:
+            self.from_curr.set(filtered_list[0])
 
     def perform_calculation(self):
         try:
             amt = float(self.amount_entry.get())
             raw_selection = self.from_curr.get()
-            base = raw_selection.split()[-1] # Pull out currency code part only
+            if raw_selection == "No Match Found":
+                raise ValueError
+                
+            base = raw_selection.split()[-1] # Extract symbol index token text segment
             base_rate = self.rates[base]
             usd_amt = amt / base_rate
             
@@ -138,13 +188,12 @@ class CurrencyXPO(ctk.CTk):
             row_str = ""
             for target in sorted(self.rates.keys()):
                 converted = usd_amt * self.rates[target]
-                code3 = ALPHA3.get(target, "???")
+                code3, _ = ALPHA3.get(target, ("???", ""))
                 
-                # Format with neat column gaps
                 item_entry = f"[{code3}] {target}: {converted:<12,.2f} "
                 row_str += f"{item_entry:<26}"
                 count += 1
-                if count == 3:  # Perfect spacing constraint parameters 
+                if count == 3:  
                     self.calc_output.insert("end", row_str + "\n")
                     row_str = ""
                     count = 0
@@ -152,7 +201,7 @@ class CurrencyXPO(ctk.CTk):
                 self.calc_output.insert("end", row_str + "\n")
         except ValueError:
             self.calc_output.delete("1.0", "end")
-            self.calc_output.insert("end", "SYNTAX ERROR: CRITICAL NON-NUMERIC CHARACTER DETECTED.")
+            self.calc_output.insert("end", "SYNTAX ERROR: CRITICAL INVALID VARIABLE MATCH ENCOUNTERED.")
 
     # ---------------- VAULT & LEDGER MODULE (BOTTOM LEFT) ----------------
     def setup_vault_module(self):
@@ -234,7 +283,7 @@ class CurrencyXPO(ctk.CTk):
                 self.rates[curr] = max(0.0001, round(self.rates[curr] * (1 + change), 5))
                 
                 timestamp = time.strftime("%H:%M:%S")
-                code3 = ALPHA3.get(curr, "???")
+                code3, _ = ALPHA3.get(curr, ("???", ""))
                 
                 self.log_text.configure(state="normal")
                 self.log_text.insert("end", f"[{timestamp}] VOLATILITY DETECTED: [{code3}] {curr}/USD -> {self.rates[curr]:,.5f} (")
@@ -263,9 +312,9 @@ class CurrencyXPO(ctk.CTk):
         self.canvas.delete("all")
         sampled_currencies = random.sample(self.currencies, min(25, len(self.currencies)))
         
-        current_x = 1350
+        current_x = 1400
         for currency in sampled_currencies:
-            code3 = ALPHA3.get(currency, "???")
+            code3, _ = ALPHA3.get(currency, ("???", ""))
             rate_val = self.rates[currency]
             text_string = f" [{code3}] {currency}: {rate_val:,.2f} || "
             
