@@ -13,15 +13,15 @@ NEON_GREEN = "#00FF66"      # Profit / Value Up
 NEON_RED = "#FF3333"        # Expense / Value Down
 PANEL_DARK = "#121212"      # High-Contrast Component Gray
 
-# Regional Country Identifiers (Clean Text-Based Matrix for Windows Compatibility)
-REGIONS = {
-    "USD": "US", "EUR": "EU", "GBP": "UK", "JPY": "JP", "CAD": "CA", "AUD": "AU", "CHF": "CH", "CNY": "CN", "HKD": "HK", "NZD": "NZ",
-    "ZAR": "ZA", "EGP": "EG", "NGN": "NG", "KES": "KE", "GHS": "GH", "MAD": "MA", "DZD": "DZ", "TND": "TN", "UGX": "UG", "TZS": "TZ",
-    "ETB": "ET", "ZMW": "ZM", "MUR": "MU", "BWP": "BW", "XOF": "CI", "XAF": "CM", "RWF": "RW", "AOA": "AO", "MZN": "MZ", "SCR": "SC",
-    "SEK": "SE", "NOK": "NO", "DKK": "DK", "PLN": "PL", "CZK": "CZ", "HUF": "HU", "RON": "RO", "BGN": "BG", "TRY": "TR", "AED": "AE",
-    "SAR": "SA", "INR": "IN", "KRW": "KR", "SGD": "SG", "MYR": "MY", "THB": "TH", "IDR": "ID", "PHP": "PH", "VND": "VN", "ILS": "IL",
-    "KWD": "KW", "QAR": "QA", "OMR": "OM", "BHD": "BH", "PKR": "PK", "BDT": "BD", "LKR": "LK", "TWD": "TW", "MXN": "MX", "BRL": "BR",
-    "ARS": "AR", "CLP": "CL", "COP": "CO", "PEN": "PE", "UYU": "UY", "CRC": "CR", "DOP": "DO", "ISK": "IS"
+# 3-Letter Clean ISO Country Identifiers
+ALPHA3 = {
+    "USD": "USA", "EUR": "EUR", "GBP": "GBR", "JPY": "JPN", "CAD": "CAN", "AUD": "AUS", "CHF": "CHE", "CNY": "CHN", "HKD": "HKG", "NZD": "NZL",
+    "ZAR": "ZAF", "EGP": "EGY", "NGN": "NGA", "KES": "KEN", "GHS": "GHA", "MAD": "MAR", "DZD": "DZA", "TND": "TUN", "UGX": "UGA", "TZS": "TZA",
+    "ETB": "ETH", "ZMW": "ZMB", "MUR": "MUS", "BWP": "BWA", "XOF": "WAF", "XAF": "CAF", "RWF": "RWA", "AOA": "AGO", "MZN": "MOZ", "SCR": "SYC",
+    "SEK": "SWE", "NOK": "NOR", "DKK": "DNK", "PLN": "POL", "CZK": "CZE", "HUF": "HUN", "RON": "ROU", "BGN": "BGR", "TRY": "TUR", "AED": "ARE",
+    "SAR": "SAU", "INR": "IND", "KRW": "KOR", "SGD": "SGP", "MYR": "MYS", "THB": "THA", "IDR": "IDN", "PHP": "PHL", "VND": "VNM", "ILS": "ISR",
+    "KWD": "KWT", "QAR": "QAT", "OMR": "OMN", "BHD": "BHR", "PKR": "PAK", "BDT": "BGD", "LKR": "LKA", "TWD": "TWN", "MXN": "MEX", "BRL": "BRA",
+    "ARS": "ARG", "CLP": "CHL", "COP": "COL", "PEN": "PER", "UYU": "URY", "CRC": "CRI", "DOP": "DOM", "ISK": "ISL"
 }
 
 class CurrencyXPO(ctk.CTk):
@@ -33,7 +33,7 @@ class CurrencyXPO(ctk.CTk):
         self.configure(fg_color=BG_COLOR)
         
         # Base Master Currencies Profile List
-        self.currencies = sorted(list(REGIONS.keys()))
+        self.currencies = sorted(list(ALPHA3.keys()))
         self.rates = {c: round(random.uniform(0.5, 150.0), 2) for c in self.currencies}
         self.rates["USD"] = 1.00
         
@@ -85,13 +85,13 @@ class CurrencyXPO(ctk.CTk):
                 fetched_rates = response.json().get("rates", {})
                 for currency, rate in fetched_rates.items():
                     self.rates[currency] = rate
-                    if currency not in self.currencies and currency not in REGIONS:
-                        REGIONS[currency] = currency[:2]  # Fallback code
+                    if currency not in self.currencies and currency not in ALPHA3:
+                        ALPHA3[currency] = currency  # Fallback code if unknown discovered
                         self.currencies.append(currency)
                 
                 self.currencies.sort()
-                # Dynamic update of display lists
-                self.from_curr.configure(values=[f"[{REGIONS.get(c, '??')}] {c}" for c in self.currencies])
+                # Dynamic update of option menu dropdown items
+                self.from_curr.configure(values=[f"[{ALPHA3.get(c, '???')}] {c}" for c in self.currencies])
                 self.stats_label.configure(text="[VOLATILITY: REALTIME]  [ACTIVE CORES: 8]  [SYNC: SECURE]", text_color=NEON_GREEN)
         except Exception:
             self.stats_label.configure(text="[VOLATILITY: SIMULATED]  [ACTIVE CORES: 4]  [SYNC: LOCAL]", text_color=NEON_RED)
@@ -111,10 +111,10 @@ class CurrencyXPO(ctk.CTk):
         self.amount_entry.pack(side="left", fill="x", expand=True, padx=(0, 5))
         
         # Display formatted regions with Brackets inside the Selection list
-        display_options = [f"[{REGIONS.get(c, '??')}] {c}" for c in self.currencies]
-        self.from_curr = ctk.CTkOptionMenu(input_row, values=display_options, fg_color=BG_COLOR, button_color="#222222", font=("Courier New", 12), width=110, height=28)
+        display_options = [f"[{ALPHA3.get(c, '???')}] {c}" for c in self.currencies]
+        self.from_curr = ctk.CTkOptionMenu(input_row, values=display_options, fg_color=BG_COLOR, button_color="#222222", font=("Courier New", 12), width=120, height=28)
         self.from_curr.pack(side="left", padx=5)
-        self.from_curr.set("[US] USD")
+        self.from_curr.set("[USA] USD")
         
         calc_btn = ctk.CTkButton(input_row, text="COMPUTE MATRIX", fg_color=NEON_GREEN, text_color=BG_COLOR, font=("Courier New", 12, "bold"), width=120, height=28, command=self.perform_calculation)
         calc_btn.pack(side="left", padx=(5, 0))
@@ -138,11 +138,11 @@ class CurrencyXPO(ctk.CTk):
             row_str = ""
             for target in sorted(self.rates.keys()):
                 converted = usd_amt * self.rates[target]
-                reg = REGIONS.get(target, "??")
+                code3 = ALPHA3.get(target, "???")
                 
                 # Format with neat column gaps
-                item_entry = f"[{reg}] {target}: {converted:<12,.2f} "
-                row_str += f"{item_entry:<24}"
+                item_entry = f"[{code3}] {target}: {converted:<12,.2f} "
+                row_str += f"{item_entry:<26}"
                 count += 1
                 if count == 3:  # Perfect spacing constraint parameters 
                     self.calc_output.insert("end", row_str + "\n")
@@ -234,10 +234,10 @@ class CurrencyXPO(ctk.CTk):
                 self.rates[curr] = max(0.0001, round(self.rates[curr] * (1 + change), 5))
                 
                 timestamp = time.strftime("%H:%M:%S")
-                reg = REGIONS.get(curr, "??")
+                code3 = ALPHA3.get(curr, "???")
                 
                 self.log_text.configure(state="normal")
-                self.log_text.insert("end", f"[{timestamp}] VOLATILITY DETECTED: [{reg}] {curr}/USD -> {self.rates[curr]:,.5f} (")
+                self.log_text.insert("end", f"[{timestamp}] VOLATILITY DETECTED: [{code3}] {curr}/USD -> {self.rates[curr]:,.5f} (")
                 if change >= 0:
                     self.log_text.insert("end", f"▲ HIGH {change*100:+.3f}%", "UP_TAG")
                 else:
@@ -265,9 +265,9 @@ class CurrencyXPO(ctk.CTk):
         
         current_x = 1350
         for currency in sampled_currencies:
-            reg = REGIONS.get(currency, "??")
+            code3 = ALPHA3.get(currency, "???")
             rate_val = self.rates[currency]
-            text_string = f" [{reg}] {currency}: {rate_val:,.2f} || "
+            text_string = f" [{code3}] {currency}: {rate_val:,.2f} || "
             
             text_color = random.choice([NEON_GREEN, TEXT_WHITE, NEON_RED])
             
