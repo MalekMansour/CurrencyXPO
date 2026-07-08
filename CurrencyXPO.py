@@ -11,6 +11,7 @@ BG_COLOR = "#0A0A0A"        # Deep Terminal Black
 TEXT_WHITE = "#FFFFFF"      # Pure White Labels
 NEON_GREEN = "#00FF66"      # Profit / Value Up
 NEON_RED = "#FF3333"        # Expense / Value Down
+NEON_HIGHLIGHT = "#FFFF00"  # Flash Highlight Yellow
 PANEL_DARK = "#121212"      # High-Contrast Component Gray
 
 # 3-Letter Clean ISO Country Identifiers & Full Names Matrix
@@ -118,36 +119,44 @@ class CurrencyXPO(ctk.CTk):
         lbl = ctk.CTkLabel(calc_frame, text="[ GLOBAL CROSS-EXCHANGE GRAPH ]", font=("Courier New", 14, "bold"), text_color=TEXT_WHITE)
         lbl.pack(anchor="w", padx=15, pady=(10, 5))
         
-        # Interactive Layout Filter Matrix Row
+        # Row 1: Source Selector Entry Filter Tools
         filter_row = ctk.CTkFrame(calc_frame, fg_color="transparent")
         filter_row.pack(fill="x", padx=15, pady=2)
         
-        # Live Entry Search Field Box
         self.search_var = tk.StringVar()
         self.search_var.trace_add("write", lambda *args: self.filter_options())
         
-        self.search_field = ctk.CTkEntry(filter_row, textvariable=self.search_var, placeholder_text="🔍 Search Country, Code, Name...", fg_color=BG_COLOR, text_color=TEXT_WHITE, font=("Courier New", 11), height=28)
+        self.search_field = ctk.CTkEntry(filter_row, textvariable=self.search_var, placeholder_text="🔍 Filter Source Dropdown...", fg_color=BG_COLOR, text_color=TEXT_WHITE, font=("Courier New", 11), height=28)
         self.search_field.pack(side="left", fill="x", expand=True, padx=(0, 5))
         
-        # Option Selection Menu Dropdown
         self.from_curr = ctk.CTkOptionMenu(filter_row, values=[], fg_color=BG_COLOR, button_color="#222222", font=("Courier New", 11), width=140, height=28)
         self.from_curr.pack(side="left")
         
-        # Computation Trigger Output Entry Row
+        # Row 2: Computation Entry Controls & Grid Matrix Target Highlight Tracker Entry
         input_row = ctk.CTkFrame(calc_frame, fg_color="transparent")
         input_row.pack(fill="x", padx=15, pady=5)
         
-        self.amount_entry = ctk.CTkEntry(input_row, placeholder_text="Enter Numerical Quant...", fg_color=BG_COLOR, text_color=TEXT_WHITE, font=("Courier New", 12), height=28)
-        self.amount_entry.pack(side="left", fill="x", expand=True, padx=(0, 5))
+        self.amount_entry = ctk.CTkEntry(input_row, placeholder_text="Enter Amount...", fg_color=BG_COLOR, text_color=TEXT_WHITE, font=("Courier New", 12), height=28, width=130)
+        self.amount_entry.pack(side="left", padx=(0, 5))
         
-        calc_btn = ctk.CTkButton(input_row, text="COMPUTE MATRIX", fg_color=NEON_GREEN, text_color=BG_COLOR, font=("Courier New", 12, "bold"), width=140, height=28, command=self.perform_calculation)
+        # Highlight entry variables targeting output window values directly
+        self.highlight_var = tk.StringVar()
+        self.highlight_var.trace_add("write", lambda *args: self.apply_matrix_highlights())
+        
+        self.highlight_field = ctk.CTkEntry(input_row, textvariable=self.highlight_var, placeholder_text="⚡ Highlight symbols (e.g. cad usd)...", fg_color=BG_COLOR, text_color=TEXT_WHITE, font=("Courier New", 11), height=28)
+        self.highlight_field.pack(side="left", fill="x", expand=True, padx=(0, 5))
+        
+        calc_btn = ctk.CTkButton(input_row, text="COMPUTE MATRIX", fg_color=NEON_GREEN, text_color=BG_COLOR, font=("Courier New", 12, "bold"), width=130, height=28, command=self.perform_calculation)
         calc_btn.pack(side="left")
         
-        self.calc_output = ctk.CTkTextbox(calc_frame, fg_color=BG_COLOR, font=("Courier New", 12), text_color=TEXT_WHITE, border_color="#1A1A1A", border_width=1)
+        # Raw text element base engine mapping custom UI tags
+        self.calc_output = tk.Text(calc_frame, bg=BG_COLOR, fg=TEXT_WHITE, font=("Courier New", 11), bd=1, relief="solid", highlightthickness=0)
         self.calc_output.pack(fill="both", expand=True, padx=15, pady=(5, 15))
-        self.calc_output.insert("end", "System operational. Input search patterns and baseline values to run equations.")
+        self.calc_output.tag_config("HIGHLIGHT_MARKER", foreground=NEON_HIGHLIGHT, font=("Courier New", 11, "bold"))
+        self.calc_output.insert("end", "System operational. Input quantitative tokens to compile target schemas.")
+        self.calc_output.configure(state="disabled")
         
-        self.filter_options() # Populate initially
+        self.filter_options() 
 
     def filter_options(self):
         query = self.search_var.get().lower().strip()
@@ -155,7 +164,6 @@ class CurrencyXPO(ctk.CTk):
         
         for c in self.currencies:
             code3, fullname = ALPHA3.get(c, ("???", "Alternative Asset"))
-            # Match against: Code name (USD), ISO Code (USA), or Full Title Name (United States)
             if not query or query in c.lower() or query in code3.lower() or query in fullname.lower():
                 filtered_list.append(f"[{code3}] {c}")
                 
@@ -163,8 +171,6 @@ class CurrencyXPO(ctk.CTk):
             filtered_list = ["No Match Found"]
             
         self.from_curr.configure(values=filtered_list)
-        
-        # Set selection choice defaults cleanly matching active query changes safely
         if "[USA] USD" in filtered_list and not query:
             self.from_curr.set("[USA] USD")
         else:
@@ -177,10 +183,11 @@ class CurrencyXPO(ctk.CTk):
             if raw_selection == "No Match Found":
                 raise ValueError
                 
-            base = raw_selection.split()[-1] # Extract symbol index token text segment
+            base = raw_selection.split()[-1] 
             base_rate = self.rates[base]
             usd_amt = amt / base_rate
             
+            self.calc_output.configure(state="normal")
             self.calc_output.delete("1.0", "end")
             self.calc_output.insert("end", f"--- COMPLETE TRANS-CONVERSION SYSTEM FOR {amt:,} {base} ---\n\n")
             
@@ -199,9 +206,52 @@ class CurrencyXPO(ctk.CTk):
                     count = 0
             if row_str:
                 self.calc_output.insert("end", row_str + "\n")
+                
+            self.calc_output.configure(state="disabled")
+            
+            # Apply any existing entries inside highlight tracking bars right away
+            self.apply_matrix_highlights()
         except ValueError:
+            self.calc_output.configure(state="normal")
             self.calc_output.delete("1.0", "end")
             self.calc_output.insert("end", "SYNTAX ERROR: CRITICAL INVALID VARIABLE MATCH ENCOUNTERED.")
+            self.calc_output.configure(state="disabled")
+
+    def apply_matrix_highlights(self):
+        # Clear legacy highlights first
+        self.calc_output.tag_remove("HIGHLIGHT_MARKER", "1.0", "end")
+        
+        raw_highlight_input = self.highlight_var.get().lower().strip()
+        if not raw_highlight_input:
+            return
+            
+        # Parse targets (splits by space character tags, handling 'cad usd tun')
+        target_tokens = [token.strip() for token in raw_highlight_input.split(" ") if token.strip()]
+        
+        self.calc_output.configure(state="normal")
+        for token in target_tokens:
+            start_index = "1.0"
+            while True:
+                # Seek index instances matching target symbols or ISO codes
+                pos = self.calc_output.search(token, start_index, stopindex="end", nocase=True)
+                if not pos:
+                    break
+                
+                # Determine structural boundaries for highlighting
+                line, col = pos.split('.')
+                line_end = f"{line}.end"
+                
+                # Find start of line and color the exact 26-character layout block row item
+                col_int = int(col)
+                start_block = max(0, (col_int // 26) * 26)
+                
+                block_start_idx = f"{line}.{start_block}"
+                block_end_idx = f"{line}.{start_block + 25}"
+                
+                self.calc_output.tag_add("HIGHLIGHT_MARKER", block_start_idx, block_end_idx)
+                start_index = f"{pos} + 1c"
+                
+        self.calc_output.configure(state="disabled")
 
     # ---------------- VAULT & LEDGER MODULE (BOTTOM LEFT) ----------------
     def setup_vault_module(self):
@@ -212,7 +262,6 @@ class CurrencyXPO(ctk.CTk):
         vault_frame.grid_columnconfigure(1, weight=1)
         vault_frame.grid_rowconfigure(0, weight=1)
 
-        # Expense Tracking Segment
         p_frame = ctk.CTkFrame(vault_frame, fg_color="transparent")
         p_frame.grid(row=0, column=0, sticky="nsew", padx=10, pady=10)
         
@@ -226,7 +275,6 @@ class CurrencyXPO(ctk.CTk):
         self.purchase_box = ctk.CTkTextbox(p_frame, fg_color=BG_COLOR, font=("Courier New", 11))
         self.purchase_box.pack(fill="both", expand=True)
 
-        # Savings Asset Allocator Segment
         s_frame = ctk.CTkFrame(vault_frame, fg_color="transparent")
         s_frame.grid(row=0, column=1, sticky="nsew", padx=10, pady=10)
         
@@ -254,7 +302,7 @@ class CurrencyXPO(ctk.CTk):
             self.wishlist_box.insert("end", "\n".join(self.wishlist))
             self.save_entry.delete(0, 'end'); self.target_entry.delete(0, 'end')
 
-    # ---------------- LIVE CONSOLE STREAM LOG MODULE (RIGHT COLUMN) ----------------
+    # ---------------- LIVE CONSOLE STREAM LOG MODULE ----------------
     def setup_log_module(self):
         log_frame = ctk.CTkFrame(self.dashboard_grid, fg_color=PANEL_DARK, border_color="#222222", border_width=1)
         log_frame.grid(row=0, column=1, sticky="nsew", padx=(10, 0))
@@ -298,7 +346,7 @@ class CurrencyXPO(ctk.CTk):
             
         self.after(600, self.update_live_market_log)
 
-    # ---------------- EXPANDED FOOTER TICKER MARQUEE ----------------
+    # ---------------- FOOTER TICKER MARQUEE ----------------
     def setup_marquee_bar(self):
         self.marquee_frame = ctk.CTkFrame(self, fg_color=PANEL_DARK, height=35, corner_radius=0)
         self.marquee_frame.pack(side="bottom", fill="x")
