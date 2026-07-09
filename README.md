@@ -15,8 +15,6 @@ CurrencyXPO is a financial dashboard built with Python, CustomTkinter, and the E
 
 The application automatically falls back to simulated market data whenever an internet connection is unavailable.
 
-⸻
-
 ## Features
 
 - Live Currency Exchange
@@ -44,9 +42,8 @@ usd cad eur jpy
 
 The matching currencies will be highlighted for easier comparison.
 
-⸻
 
-📈 Live Market Feed
+- Live Market Feed
 
 A continuously updating market console displays simulated price movements including:
 
@@ -56,9 +53,8 @@ A continuously updating market console displays simulated price movements includ
 * Percentage increase/decrease
 * Color-coded market direction
 
-⸻
 
-💰 Expense Tracker
+- Expense Tracker
 
 Record purchases including:
 
@@ -66,14 +62,7 @@ Record purchases including:
 * Amount
 * Currency
 
-Example:
-
-Laptop
-1200 CAD
-
-⸻
-
-🎯 Savings Vault
+- Savings Vault
 
 Create financial goals such as:
 
