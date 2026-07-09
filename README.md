@@ -53,7 +53,6 @@ A continuously updating market console displays simulated price movements includ
 * Percentage increase/decrease
 * Color-coded market direction
 
-
 - Expense Tracker
 
 Record purchases including:
@@ -73,15 +72,12 @@ Create financial goals such as:
 
 Store target values and monitor your objectives.
 
-⸻
 
-📊 Scrolling Currency Ticker
+- Scrolling Currency Ticker
 
 A live ticker continuously displays exchange rates for multiple currencies in a stock-market style display.
 
-⸻
-
-🖥️ Interface
+- Interface
 
 CurrencyXPO features a cyber-inspired terminal aesthetic including:
 
@@ -92,9 +88,7 @@ CurrencyXPO features a cyber-inspired terminal aesthetic including:
 * Live Status Console
 * Matrix-style Dashboard Layout
 
-⸻
-
-🛠️ Technologies Used
+- Technologies Used
 
 * Python 3
 * CustomTkinter
@@ -105,13 +99,12 @@ CurrencyXPO features a cyber-inspired terminal aesthetic including:
 * Random
 * Time
 
-⸻
 
-📦 Installation
+## Installation
 
 Clone the repository:
 
-git clone https://github.com/yourusername/CurrencyXPO.git
+git clone https://github.com/MalekMansour/CurrencyXPO.git
 
 Navigate into the project:
 
@@ -125,7 +118,6 @@ Run the application:
 
 python CurrencyXPO.py
 
-⸻
 
 🌐 API
 
@@ -134,67 +126,3 @@ CurrencyXPO retrieves exchange rates from:
 https://open.er-api.com/v6/latest/USD
 
 If the API is unavailable, the application automatically switches to locally simulated exchange data.
-
-⸻
-
-📂 Project Structure
-
-CurrencyXPO/
-│
-├── CurrencyXPO.py
-├── README.md
-└── requirements.txt
-
-⸻
-
-🚀 Future Improvements
-
-* Historical exchange rate charts
-* Currency trend graphs
-* Portfolio tracking
-* Export transaction history to CSV
-* Dark/Light theme toggle
-* Favorite currencies
-* Automatic refresh settings
-* Multi-language support
-
-⸻
-
-📸 Screenshots
-
-Add screenshots of your application here.
-
-Example:
-
-images/dashboard.png
-images/converter.png
-images/live-market.png
-
-⸻
-
-🤝 Contributing
-
-Contributions are welcome!
-
-If you’d like to improve CurrencyXPO, feel free to:
-
-* Fork the repository
-* Create a feature branch
-* Commit your changes
-* Submit a Pull Request
-
-⸻
-
-📄 License
-
-This project is licensed under the MIT License.
-
-⸻
-
-👨‍💻 Author
-
-Malek Mansour
-
-Software Developer | Python • Desktop Applications • Data & Finance Tools
-
-If you found this project helpful, consider giving it a ⭐ on GitHub!
