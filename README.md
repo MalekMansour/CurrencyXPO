@@ -1,128 +1,66 @@
 # 💱 CurrencyXPO
 
-A modern Python desktop application for monitoring live currency exchange rates, performing currency conversions, and managing personal financial records through a futuristic terminal-inspired interface.
+A modern Python desktop application for monitoring live currency exchange rates, performing currency conversions, and managing personal financial records through a futuristic, terminal-inspired interface.
 
-## Overview
+---
 
-CurrencyXPO is a financial dashboard built with Python, CustomTkinter, and the ExchangeRate API. It combines real-time exchange rate data with an interactive cyber-themed interface that allows users to:
+## 📝 Overview
 
-* Convert currencies instantly
-* View live exchange rate updates
-* Track purchases and expenses
-* Create financial savings goals
-* Browse a scrolling market ticker
-* Highlight specific currencies in conversion results
+**CurrencyXPO** is a financial dashboard built with Python, CustomTkinter, and the ExchangeRate API. It combines real-time exchange rate data with an interactive cyber-themed interface that allows users to:
 
-The application automatically falls back to simulated market data whenever an internet connection is unavailable.
+* **Convert currencies instantly** across dozens of international options.
+* **View live exchange rate updates** via a dedicated status console.
+* **Track purchases and expenses** in multiple currencies.
+* **Create financial savings goals** and monitor progress.
+* **Browse a scrolling market ticker** reminiscent of a stock-market display.
+* **Highlight specific currencies** within conversion results for rapid comparison.
 
-## Features
+> 💡 **Offline Mode:** The application automatically falls back to simulated market data whenever an internet connection is unavailable, ensuring uninterrupted uptime.
 
-- Live Currency Exchange
+---
 
-* Fetches real-time exchange rates from the ExchangeRate API
-* Supports dozens of international currencies
-* Automatic fallback to offline simulation mode
+## ⚡ Features
 
-- Currency Converter
+### 💵 Live Currency Exchange & Converter
+* **Real-Time Data:** Fetches live exchange rates directly from the ExchangeRate API.
+* **Multi-Attribute Search:** Quickly filter and find currencies by currency code, country name, or currency name.
+* **Conversion Matrix:** Convert an amount and instantly view its value across every available currency at once.
+* **Highlight System:** Quickly isolate specific currencies inside the conversion matrix for easier comparison.
+  * *Example filter:* `usd cad eur jpy`
 
-* Convert any amount between supported currencies
-* Search currencies by:
-    * Currency code
-    * Country code
-    * Currency name
-* View conversions to every available currency at once
+### 📊 Live Market Feed & Ticker
+* **Scrolling Ticker:** A continuous, stock-market style ticker displaying baseline rates.
+* **Animated Console:** A live-updating market feed that displays simulated price movements, complete with:
+  * Currency pairs & timestamps.
+  * Real-time exchange values.
+  * Percentage fluctuations with color-coded market direction indicators.
 
-- Highlight System
+### 📉 Financial Management
+* **Expense Tracker:** Log everyday purchases by item description, amount, and currency.
+* **Savings Vault:** Define and fund custom financial goals (e.g., *Vacation, New PC, Car, Emergency Fund*) and track your targets.
 
-Quickly highlight selected currencies inside the conversion matrix.
+### 🎨 Cyber Terminal Interface
+* **Matrix-Inspired Aesthetics:** Sleek dark mode interface paired with high-contrast UI elements.
+* **Visual Telemetry:** Neon green financial highlights for gains/selections and sharp red indicators for market losses.
+* **Multi-Threaded Performance:** Smooth, responsive UI animation driven by background execution.
 
-Example:
+---
 
-usd cad eur jpy
+## 🛠️ Technologies Used
 
-The matching currencies will be highlighted for easier comparison.
+| Category | Technology / Library |
+| :--- | :--- |
+| **Language** | Python 3 |
+| **GUI Framework** | CustomTkinter, Tkinter |
+| **Networking** | Requests |
+| **Concurrency** | Threading |
+| **Data & Logic** | ExchangeRate API, Random, Time |
 
+---
 
-- Live Market Feed
+## 🚀 Installation & Setup
 
-A continuously updating market console displays simulated price movements including:
-
-* Currency
-* Timestamp
-* Exchange value
-* Percentage increase/decrease
-* Color-coded market direction
-
-- Expense Tracker
-
-Record purchases including:
-
-* Item description
-* Amount
-* Currency
-
-- Savings Vault
-
-Create financial goals such as:
-
-* Vacation
-* New PC
-* Car
-* Emergency Fund
-
-Store target values and monitor your objectives.
-
-
-- Scrolling Currency Ticker
-
-A live ticker continuously displays exchange rates for multiple currencies in a stock-market style display.
-
-- Interface
-
-CurrencyXPO features a cyber-inspired terminal aesthetic including:
-
-* Dark Mode Interface
-* Neon Green Financial Highlights
-* Red Loss Indicators
-* Animated Market Feed
-* Live Status Console
-* Matrix-style Dashboard Layout
-
-- Technologies Used
-
-* Python 3
-* CustomTkinter
-* Tkinter
-* Requests
-* Threading
-* ExchangeRate API
-* Random
-* Time
-
-
-## Installation
-
-Clone the repository:
-
-git clone https://github.com/MalekMansour/CurrencyXPO.git
-
-Navigate into the project:
-
-cd CurrencyXPO
-
-Install dependencies:
-
-pip install customtkinter requests
-
-Run the application:
-
-python CurrencyXPO.py
-
-
-🌐 API
-
-CurrencyXPO retrieves exchange rates from:
-
-https://open.er-api.com/v6/latest/USD
-
-If the API is unavailable, the application automatically switches to locally simulated exchange data.
+1. **Clone the repository:**
+   ```bash
+   git clone [https://github.com/MalekMansour/CurrencyXPO.git](https://github.com/MalekMansour/CurrencyXPO.git)
+   cd CurrencyXPO
